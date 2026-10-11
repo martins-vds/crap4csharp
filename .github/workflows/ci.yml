@@ -2,9 +2,9 @@ name: ci
 
 on:
   push:
-    branches: [master, "vibe/**", feature/dotnet-tool]
+    branches: [master, "vibe/**"]
   pull_request:
-    branches: [master, feature/dotnet-tool]
+    branches: [master]
 
 jobs:
   build-test:
