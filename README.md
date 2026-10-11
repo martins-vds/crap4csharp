@@ -123,6 +123,16 @@ crap4csharp src/Sample.cs
 
 The target must meet the requirements in *Module & Test Resolution* above.
 
+## Releases
+
+Merge a same-repository PR from `releases/vX.X.X` into `master` to publish GitHub release `vX.X.X`
+with its `.nupkg` attached. Use canonical numeric components in `0..65534` (no prerelease suffix).
+The workflow updates the project's `Version` on `master` if necessary, then builds/tests that exact
+commit and smoke-tests the shared package on Windows/Linux x64/ARM64 before publishing.
+Download the release package into a local feed and install using the commands above with its version.
+There is no NuGet publishing. Publishing fails if `master` advances, branch protection blocks the
+version-update push, or the tag already exists; partial retries require manual resolution.
+
 ## Run
 
 Build:

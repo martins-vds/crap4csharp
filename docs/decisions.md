@@ -50,11 +50,20 @@ node set below (an approved departure), so absolute CRAP scores are not numerica
 ## Ratified conventions (Mr. Das)
 
 - **.NET tool packaging.** The single CLI project packs as `Microsoft.Crap4CSharp`, with command
-  `crap4csharp` and version `1.0.0`. Keep SDK defaults: AnyCPU, portable, framework-dependent,
+  `crap4csharp` and initial version `1.0.0`. Keep SDK defaults: AnyCPU, portable, framework-dependent,
   with no runtime identifiers or self-contained settings. The SDK derives numeric assembly/file
   versions (`1.0.0.0`) from `Version`; prerelease `Version` overrides remain supported. Windows/Linux
   x64/ARM64 consumers need the matching .NET 8 runtime and SDK for analysis. CI installs one shared
   package artifact and checks the shim outside the checkout on all four native platforms.
+
+- **Release publishing.** Only a same-repository PR from `releases/vX.X.X` merged into `master`
+  publishes a GitHub tag/release `vX.X.X` with the tested `.nupkg` attached (no NuGet publishing).
+  Components are canonical decimal integers in `0..65534`; prerelease release branches are excluded.
+  If needed, preparation changes only the CLI project's literal `Version` and normally commits/pushes
+  that change to `master` before read-only reusable CI builds the exact SHA. Preparation executes no
+  repository code/MSBuild with write credentials. Publishing waits for build/tests and all four smoke
+  platforms. An advanced base, blocked push, or existing tag fails closed; partial releases are not
+  automatically repaired on retries.
 
 - **C1 — Single production assembly.** All production code lives in one assembly, `src/Crap4CSharp`
   (mirrors `crap4java`'s single module). The pure core must not depend on the ecosystem adapters
