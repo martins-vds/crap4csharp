@@ -37,6 +37,8 @@ jobs:
           if-no-files-found: ignore
 
   package:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
@@ -64,6 +66,8 @@ jobs:
           if-no-files-found: error
 
   tool-smoke:
+    permissions:
+      contents: read
     needs: package
     runs-on: ${{ matrix.runner }}
     strategy:
