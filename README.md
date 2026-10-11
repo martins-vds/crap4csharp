@@ -88,6 +88,51 @@ Tight agentic development loops run the **unit tests by default** for fast feedb
 - Running the **full** suite (including any long-running tests) requires **explicit user approval**,
   because slow tests delay the tight loop.
 
+## Install as a .NET tool from source
+
+The portable, AnyCPU, framework-dependent package supports **Windows and Linux, x64 and ARM64**.
+Install the matching native-architecture **.NET 8 runtime and SDK**: the runtime runs the tool;
+the SDK is needed to pack from source and to run `dotnet test` during analysis.
+From this source repository's root, pack and install globally from the local package feed
+(version: `1.0.0`):
+
+```bash
+dotnet pack src/Crap4CSharp/Crap4CSharp.csproj -c Release -o ./artifacts/packages
+dotnet tool install --global Microsoft.Crap4CSharp --version 1.0.0 --add-source "$PWD/artifacts/packages"
+```
+
+PowerShell equivalent:
+
+```powershell
+dotnet pack src/Crap4CSharp/Crap4CSharp.csproj -c Release -o ./artifacts/packages
+dotnet tool install --global Microsoft.Crap4CSharp --version 1.0.0 --add-source (Join-Path (Get-Location).Path "artifacts/packages")
+```
+
+The package ID defaults to `Microsoft.Crap4CSharp`; the installed command is `crap4csharp`.
+These instructions use a locally built package, not a published NuGet release. Ensure the
+.NET global tools directory is on your `PATH`.
+
+From the **target repository root** you want to analyze:
+
+```bash
+crap4csharp --help
+crap4csharp
+crap4csharp --changed
+crap4csharp src/Sample.cs
+```
+
+The target must meet the requirements in *Module & Test Resolution* above.
+
+## Releases
+
+Merge a same-repository PR from `releases/vX.X.X` into `master` to publish GitHub release `vX.X.X`
+with its `.nupkg` attached. Use canonical numeric components in `0..65534` (no prerelease suffix).
+The workflow updates the project's `Version` on `master` if necessary, then builds/tests that exact
+commit and smoke-tests the shared package on Windows/Linux x64/ARM64 before publishing.
+Download the release package into a local feed and install using the commands above with its version.
+There is no NuGet publishing. Publishing fails if `master` advances, branch protection blocks the
+version-update push, or the tag already exists; partial retries require manual resolution.
+
 ## Run
 
 Build:
