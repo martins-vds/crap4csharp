@@ -88,6 +88,31 @@ Tight agentic development loops run the **unit tests by default** for fast feedb
 - Running the **full** suite (including any long-running tests) requires **explicit user approval**,
   because slow tests delay the tight loop.
 
+## Install as a .NET tool from source
+
+Requires the **.NET 8 SDK**. From this source repository's root, pack and install globally
+from the local package feed (default package version: `1.0.0`):
+
+```bash
+dotnet pack src/Crap4CSharp/Crap4CSharp.csproj -c Release -o ./artifacts/packages
+dotnet tool install --global Microsoft.Crap4CSharp --version 1.0.0 --add-source "$PWD/artifacts/packages"
+```
+
+The package ID defaults to `Microsoft.Crap4CSharp`; the installed command is `crap4csharp`.
+These instructions use a locally built package, not a published NuGet release. Ensure the
+.NET global tools directory is on your `PATH`.
+
+From the **target repository root** you want to analyze:
+
+```bash
+crap4csharp --help
+crap4csharp
+crap4csharp --changed
+crap4csharp src/Sample.cs
+```
+
+The target must meet the requirements in *Module & Test Resolution* above.
+
 ## Run
 
 Build:
