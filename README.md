@@ -90,12 +90,22 @@ Tight agentic development loops run the **unit tests by default** for fast feedb
 
 ## Install as a .NET tool from source
 
-Requires the **.NET 8 SDK**. From this source repository's root, pack and install globally
-from the local package feed (default package version: `1.0.0`):
+The portable, AnyCPU, framework-dependent package supports **Windows and Linux, x64 and ARM64**.
+Install the matching native-architecture **.NET 8 runtime and SDK**: the runtime runs the tool;
+the SDK is needed to pack from source and to run `dotnet test` during analysis.
+From this source repository's root, pack and install globally from the local package feed
+(version: `1.0.0`):
 
 ```bash
 dotnet pack src/Crap4CSharp/Crap4CSharp.csproj -c Release -o ./artifacts/packages
 dotnet tool install --global Microsoft.Crap4CSharp --version 1.0.0 --add-source "$PWD/artifacts/packages"
+```
+
+PowerShell equivalent:
+
+```powershell
+dotnet pack src/Crap4CSharp/Crap4CSharp.csproj -c Release -o ./artifacts/packages
+dotnet tool install --global Microsoft.Crap4CSharp --version 1.0.0 --add-source (Join-Path (Get-Location).Path "artifacts/packages")
 ```
 
 The package ID defaults to `Microsoft.Crap4CSharp`; the installed command is `crap4csharp`.
